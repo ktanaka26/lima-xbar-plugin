@@ -423,12 +423,19 @@ def xbar_icon(vms: dict = {}):
 
     :param dict vms: Data about Lima VMs
     """
-    menuBarIcon = f"🐋❗ | color={STOPPED_VM_COLOR}"
+    menuBarIcon = "VMs:"
+    is_not_running = True
     for vm in vms:
         logging.debug("vm: %s", vm)
         if vms[vm]["status"] == "Running":
-            menuBarIcon = f"🐋 🏃 | color={RUNNING_VM_COLOR}"
-            break
+            is_not_running = False
+            if vms[vm]["name"] == "docker":
+                menuBarIcon += "🐳"
+            else:
+                menuBarIcon += "💻"
+            continue
+    if is_not_running:
+        menuBarIcon += "None"
     print(menuBarIcon)
     print("---")
 
